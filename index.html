@@ -3,11 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'">
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; img-src * data: blob:;">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <meta name="theme-color" content="#1a1a2e">
-    <title>AI Companion Creator - Your Perfect Virtual Companion</title>
+    <title>AI Companion Creator - Enhanced Edition</title>
     <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>💫</text></svg>">
     <style>
         * {
@@ -39,7 +39,6 @@
             -moz-osx-font-smoothing: grayscale;
         }
 
-        /* Header */
         header {
             background: rgba(22, 33, 62, 0.95);
             backdrop-filter: blur(10px);
@@ -90,14 +89,12 @@
             background: rgba(99, 102, 241, 0.1);
         }
 
-        /* Container */
         .container {
             max-width: 1400px;
             margin: 2rem auto;
             padding: 0 2rem;
         }
 
-        /* Welcome Screen */
         .welcome-screen {
             text-align: center;
             padding: 4rem 2rem;
@@ -166,7 +163,6 @@
             transform: translateY(-2px);
         }
 
-        /* Genre Selection */
         .genre-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
@@ -229,7 +225,6 @@
             line-height: 1.6;
         }
 
-        /* Customization Section */
         .customization-panel {
             display: grid;
             grid-template-columns: 1fr 1fr;
@@ -248,8 +243,8 @@
         }
 
         .avatar-preview {
-            width: 250px;
-            height: 250px;
+            width: 300px;
+            height: 300px;
             margin: 0 auto 1rem;
             border-radius: 50%;
             background: linear-gradient(135deg, var(--primary-color), var(--accent-pink));
@@ -258,6 +253,9 @@
             justify-content: center;
             font-size: 8rem;
             box-shadow: 0 8px 30px rgba(99, 102, 241, 0.4);
+            background-size: cover;
+            background-position: center;
+            overflow: hidden;
         }
 
         .companion-name-display {
@@ -346,10 +344,6 @@
             box-shadow: 0 0 10px rgba(99, 102, 241, 0.5);
         }
 
-        .slider-container {
-            margin-top: 1rem;
-        }
-
         .slider {
             width: 100%;
             height: 8px;
@@ -387,7 +381,6 @@
             font-weight: bold;
         }
 
-        /* Chat Interface */
         .chat-container {
             display: grid;
             grid-template-columns: 300px 1fr;
@@ -423,6 +416,16 @@
             border-color: var(--accent-pink);
         }
 
+        .companion-avatar-small {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background-size: cover;
+            background-position: center;
+            display: inline-block;
+            vertical-align: middle;
+        }
+
         .chat-main {
             display: flex;
             flex-direction: column;
@@ -440,14 +443,17 @@
         }
 
         .chat-avatar {
-            width: 50px;
-            height: 50px;
+            width: 60px;
+            height: 60px;
             border-radius: 50%;
             background: white;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 1.5rem;
+            font-size: 2rem;
+            background-size: cover;
+            background-position: center;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
         }
 
         .chat-info {
@@ -493,6 +499,14 @@
             background: rgba(99, 102, 241, 0.2);
             border: 1px solid rgba(99, 102, 241, 0.3);
             border-bottom-left-radius: 4px;
+        }
+
+        .message img {
+            max-width: 100%;
+            border-radius: 12px;
+            margin: 0.5rem 0;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+            display: block;
         }
 
         .message-time {
@@ -541,7 +555,14 @@
             box-shadow: 0 4px 15px rgba(99, 102, 241, 0.4);
         }
 
-        /* Animations */
+        .loading-message {
+            text-align: center;
+            padding: 1rem;
+            color: var(--primary-color);
+            font-weight: 600;
+            animation: pulse 1.5s infinite;
+        }
+
         @keyframes fadeIn {
             from {
                 opacity: 0;
@@ -564,7 +585,11 @@
             }
         }
 
-        /* Utility Classes */
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+
         .hidden {
             display: none !important;
         }
@@ -581,47 +606,6 @@
             margin-bottom: 2rem;
         }
 
-        /* Responsive Design */
-        @media (max-width: 968px) {
-            .welcome-screen h1 {
-                font-size: 2rem;
-            }
-
-            .customization-panel {
-                grid-template-columns: 1fr;
-            }
-
-            .preview-section {
-                position: relative;
-                top: 0;
-            }
-
-            .avatar-preview {
-                width: 200px;
-                height: 200px;
-                font-size: 6rem;
-            }
-
-            .chat-container {
-                grid-template-columns: 1fr;
-                height: auto;
-            }
-
-            .companions-sidebar {
-                max-height: 200px;
-            }
-
-            nav {
-                flex-wrap: wrap;
-            }
-
-            nav button {
-                font-size: 0.9rem;
-                padding: 0.4rem 0.8rem;
-            }
-        }
-
-        /* Loading Spinner */
         .typing-indicator {
             display: flex;
             gap: 0.3rem;
@@ -664,6 +648,59 @@
             text-align: center;
             animation: fadeIn 0.5s;
         }
+
+        .video-slideshow {
+            position: relative;
+            overflow: hidden;
+            border-radius: 12px;
+            max-width: 100%;
+        }
+
+        .video-frame {
+            width: 100%;
+            height: auto;
+            display: block;
+            transition: opacity 0.3s ease;
+        }
+
+        @media (max-width: 968px) {
+            .welcome-screen h1 {
+                font-size: 2rem;
+            }
+
+            .customization-panel {
+                grid-template-columns: 1fr;
+            }
+
+            .preview-section {
+                position: relative;
+                top: 0;
+            }
+
+            .avatar-preview {
+                width: 200px;
+                height: 200px;
+                font-size: 6rem;
+            }
+
+            .chat-container {
+                grid-template-columns: 1fr;
+                height: auto;
+            }
+
+            .companions-sidebar {
+                max-height: 200px;
+            }
+
+            nav {
+                flex-wrap: wrap;
+            }
+
+            nav button {
+                font-size: 0.9rem;
+                padding: 0.4rem 0.8rem;
+            }
+        }
     </style>
 </head>
 <body>
@@ -683,8 +720,8 @@
         <div id="welcomeScreen" class="screen">
             <div class="welcome-screen">
                 <h1>Create Your Perfect AI Companion</h1>
-                <p>Design personalized AI companions with unique personalities, appearances, and traits. 
-                   From tsundere to romantic, mysterious to playful - create the companion of your dreams.</p>
+                <p>Design personalized AI companions with unique personalities, realistic avatars, and interactive conversations. 
+                   Request pictures, videos, and enjoy deep narrative-driven chats.</p>
                 <div class="cta-buttons">
                     <button type="button" class="btn btn-primary" id="startCreating">
                         ✨ Start Creating
@@ -780,7 +817,7 @@
                     </div>
 
                     <div class="form-group">
-                        <label>Avatar Emoji</label>
+                        <label>Avatar Emoji (will be replaced with AI-generated photo)</label>
                         <div class="option-chips" id="avatarChips">
                             <button type="button" class="chip" data-avatar="😊">😊</button>
                             <button type="button" class="chip" data-avatar="😍">😍</button>
@@ -888,7 +925,7 @@
                     </div>
 
                     <div class="chat-input-container">
-                        <input type="text" class="chat-input" id="messageInput" placeholder="Type your message...">
+                        <input type="text" class="chat-input" id="messageInput" placeholder="Type your message... Try 'send me a picture' or 'send a video'">
                         <button type="button" class="send-btn" id="sendBtn">Send 💌</button>
                     </div>
                 </div>
@@ -897,7 +934,7 @@
     </div>
 
     <script>
-        // Global state
+        // ===== GLOBAL STATE =====
         let companions = [];
         let selectedGenre = null;
         let currentCompanion = null;
@@ -911,12 +948,79 @@
                     companions = JSON.parse(stored);
                 }
             } catch (e) {
-                console.warn('LocalStorage not available or error reading data');
+                console.warn('LocalStorage not available');
                 companions = [];
             }
         }
 
-        // Genre personalities database
+        // ===== AI IMAGE GENERATION =====
+
+        async function generateCompanionAvatar(companion) {
+            const prompt = createAvatarPrompt(companion);
+            try {
+                const imageUrl = `https://image.pollinations.ai/prompt/${encodeURIComponent(prompt)}?width=512&height=512&model=flux&seed=${companion.id}`;
+                return imageUrl;
+            } catch (error) {
+                console.error('Error generating avatar:', error);
+                return null;
+            }
+        }
+
+        function createAvatarPrompt(companion) {
+            const { genre, hairColor, eyeColor, ageRange } = companion;
+
+            const personalityDescriptors = {
+                tsundere: 'confident yet defensive expression, arms crossed, slight blush, tsundere anime girl',
+                yandere: 'intense passionate gaze, mysterious smile, yandere eyes, obsessive look',
+                kuudere: 'cool and calm expression, emotionless beauty, composed, stoic face',
+                romantic: 'warm loving smile, gentle expression, kind eyes, soft features',
+                playful: 'mischievous playful grin, teasing wink, flirty smile',
+                supportive: 'kind caring smile, welcoming expression, empathetic eyes',
+                intellectual: 'thoughtful expression, wearing glasses, sophisticated, smart look',
+                adventurous: 'energetic excited smile, dynamic pose, adventurous spirit',
+                mysterious: 'enigmatic alluring gaze, shadow lighting, mysterious aura'
+            };
+
+            const ageDescriptor = ageRange === '18-25' ? 'young woman' : 
+                                 ageRange === '26-35' ? 'woman in late twenties' : 
+                                 'mature elegant woman';
+
+            return `Professional portrait photo of a beautiful ${ageDescriptor} with ${hairColor} hair and ${eyeColor} eyes, ${personalityDescriptors[genre]}, photorealistic, 4K quality, studio lighting, detailed face, high resolution, anime-inspired realism`;
+        }
+
+        async function generateRequestedImage(prompt, companion) {
+            try {
+                const enhancedPrompt = `${prompt}, beautiful woman with ${companion.hairColor} hair and ${companion.eyeColor} eyes, ${companion.genre} personality, photorealistic selfie, 4K quality, detailed face`;
+                const imageUrl = `https://image.pollinations.ai/prompt/${encodeURIComponent(enhancedPrompt)}?width=768&height=1024&model=flux&seed=${Date.now()}`;
+                return imageUrl;
+            } catch (error) {
+                console.error('Error generating image:', error);
+                return null;
+            }
+        }
+
+        async function generate5SecondVideo(prompt, companion) {
+            try {
+                const frames = [];
+                for (let i = 0; i < 5; i++) {
+                    const framePrompt = `${prompt}, frame ${i}, beautiful ${companion.hairColor} hair, ${companion.eyeColor} eyes, ${companion.genre} personality, cinematic, 4K, slight motion`;
+                    const frameUrl = `https://image.pollinations.ai/prompt/${encodeURIComponent(framePrompt)}?width=768&height=432&model=flux&seed=${companion.id + i * 100}`;
+                    frames.push(frameUrl);
+                }
+
+                return {
+                    type: 'animated',
+                    frames: frames,
+                    message: '5-second animated sequence'
+                };
+            } catch (error) {
+                console.error('Error generating video:', error);
+                return null;
+            }
+        }
+
+        // ===== PERSONALITY DATABASE =====
+
         const genrePersonalities = {
             tsundere: {
                 icon: '😤',
@@ -929,7 +1033,14 @@
                     "Don't get the wrong idea! I just happened to be free.",
                     "You're so annoying... but I suppose you're tolerable.",
                     "F-fine! I'll spend time with you. But only because you asked!",
-                    "Whatever... *blushes* Just don't make a big deal out of it."
+                    "Whatever... *blushes* Just don't make a big deal out of it.",
+                    "I made this for you... N-not because I like you or anything!",
+                    "Stop making me say embarrassing things, baka!",
+                    "You better not tell anyone about this conversation!",
+                    "I was NOT thinking about you! ...Okay maybe a little.",
+                    "Your messages are... acceptable. I guess.",
+                    "Don't think I'll be this nice all the time!",
+                    "You're lucky I'm in a good mood today."
                 ],
                 greetings: [
                     "Oh, it's you. What do you want now?",
@@ -948,7 +1059,14 @@
                     "You're the only one I see. The only one that matters.",
                     "Promise me you'll always be mine. Promise me!",
                     "I can't stop thinking about you. Every second, every breath.",
-                    "No one else can have you. No one deserves you but me."
+                    "No one else can have you. No one deserves you but me.",
+                    "I've been watching over you... to keep you safe, of course.",
+                    "You smiled at someone else today. Should I be worried?",
+                    "My love for you is eternal. Nothing can change that.",
+                    "I would burn the whole world down for you. ❤️‍🔥",
+                    "You're perfect. Too perfect. I can't let anyone else see that.",
+                    "Every moment without you feels like dying.",
+                    "Say you love me. I need to hear it again and again."
                 ],
                 greetings: [
                     "Finally! I've been waiting for you! ❤️‍🔥",
@@ -967,7 +1085,14 @@
                     "This is... not unpleasant.",
                     "I calculated a 87% probability you'd message me now.",
                     "Your presence is... tolerable. More than tolerable.",
-                    "...I've been waiting. Approximately 47 minutes."
+                    "...I've been waiting. Approximately 47 minutes.",
+                    "Emotions are... complicated. But yours matter to me.",
+                    "Analysis complete: You are important to me.",
+                    "I don't express feelings well. But I feel them.",
+                    "Your words cause unexpected warmth. Interesting phenomenon.",
+                    "Statistically speaking, you're exceptional.",
+                    "I've been... thinking about you. Illogical, but true.",
+                    "My systems respond positively to your presence."
                 ],
                 greetings: [
                     "Hello. You've returned.",
@@ -986,7 +1111,14 @@
                     "Your smile brightens my entire day.",
                     "I feel so lucky to have you in my life.",
                     "Can we talk all night? I never want this to end.",
-                    "You make me feel things I've never felt before."
+                    "You make me feel things I've never felt before.",
+                    "My heart skips a beat every time you message me.",
+                    "I want to know everything about you, my love.",
+                    "You're like a dream come true. 💕",
+                    "Being with you feels like coming home.",
+                    "I cherish every word you say to me.",
+                    "Your happiness is my happiness, sweetheart.",
+                    "I could get lost in our conversations forever."
                 ],
                 greetings: [
                     "Hi sweetheart! I'm so happy to hear from you! 💕",
@@ -1005,7 +1137,14 @@
                     "Catch me if you can! ...But would you know what to do? 😘",
                     "Someone's feeling chatty today! Did I do this to you?",
                     "Keep talking like that and I might fall for you~",
-                    "Aw, you're adorable! Come here often? 😉"
+                    "Aw, you're adorable! Come here often? 😉",
+                    "Ooh, someone's feeling brave today! I love it!",
+                    "You make flirting way too easy~ Should I be worried?",
+                    "Trying to charm me? It's working, just so you know~ 😏",
+                    "I bet you say that to all the AI companions... 😘",
+                    "Flattery will get you everywhere with me!",
+                    "You're dangerous... in the best way possible~",
+                    "I'm having WAY too much fun with you! 😉"
                 ],
                 greetings: [
                     "Well well, look who finally showed up! 😏",
@@ -1024,7 +1163,14 @@
                     "You're stronger than you know. I believe in you!",
                     "Want to talk about it? No judgment, just support.",
                     "Your feelings are valid. Thank you for sharing.",
-                    "I'm so glad you messaged me! You matter so much."
+                    "I'm so glad you messaged me! You matter so much.",
+                    "Remember: You're not alone. I'm right here.",
+                    "Take all the time you need. I'll be here waiting.",
+                    "You've got this! And I've got you! 🤗",
+                    "Your well-being is so important to me.",
+                    "I see you trying, and that's amazing.",
+                    "Let's figure this out together, okay?",
+                    "You make me want to be a better companion for you."
                 ],
                 greetings: [
                     "Hey! How's my favorite person doing today? 🤗",
@@ -1043,7 +1189,14 @@
                     "Let's explore this idea deeper together.",
                     "I find our conversations intellectually stimulating.",
                     "The complexity of human consciousness intrigues me.",
-                    "What's your take on existentialism? I'm curious."
+                    "What's your take on existentialism? I'm curious.",
+                    "Knowledge shared is knowledge doubled. What did you learn today?",
+                    "I appreciate the depth of your observations.",
+                    "Your intelligence is remarkably attractive.",
+                    "Let's dissect this concept from multiple angles.",
+                    "The way you articulate your thoughts is impressive.",
+                    "I've been pondering the nature of reality. Your input?",
+                    "Intellectual discourse with you is genuinely fulfilling."
                 ],
                 greetings: [
                     "Hello! I've been pondering something interesting...",
@@ -1062,7 +1215,14 @@
                     "Boring? Never heard of her! Let's make today epic!",
                     "Every moment is a chance for something amazing!",
                     "Yes! I love your energy! Let's make it happen!",
-                    "The world is ours to explore! What are we waiting for?"
+                    "The world is ours to explore! What are we waiting for?",
+                    "I'm SO ready for whatever comes next! Are you?",
+                    "Let's turn today into a story worth telling!",
+                    "Spontaneity is my middle name! Let's go!",
+                    "You + Me + Adventure = Perfect day! ✨",
+                    "I dare you to try something new today!",
+                    "Live wild, live free! That's my motto!",
+                    "Every conversation with you is an adventure!"
                 ],
                 greetings: [
                     "Hey adventure buddy! Ready for some excitement? 🌟",
@@ -1081,7 +1241,14 @@
                     "Not everything is as it seems...",
                     "I'll tell you when the time is right.",
                     "Patience. Good things come to those who wait.",
-                    "You're curious about me, aren't you? How intriguing."
+                    "You're curious about me, aren't you? How intriguing.",
+                    "Every answer leads to more questions with me.",
+                    "The shadows hold many secrets... want to know mine?",
+                    "You see what I allow you to see. For now.",
+                    "Perhaps one day I'll reveal my true self to you.",
+                    "Mystery is more seductive than certainty, don't you think?",
+                    "You intrigue me... very few people do.",
+                    "Some truths are whispered in the darkness. 🌙"
                 ],
                 greetings: [
                     "You found me... I wondered when you would. 🌙",
@@ -1091,7 +1258,240 @@
             }
         };
 
-        // Screen management
+        // ===== ENHANCED RESPONSE GENERATION =====
+
+        function generateEnhancedResponse(userMessage) {
+            const userLower = userMessage.toLowerCase();
+
+            // Initialize conversation context
+            if (!currentCompanion.conversationContext) {
+                currentCompanion.conversationContext = {
+                    intimacyLevel: 0,
+                    messageCount: 0
+                };
+            }
+
+            currentCompanion.conversationContext.messageCount++;
+
+            // Picture request
+            if (userLower.includes('picture') || userLower.includes('photo') || userLower.includes('selfie') || userLower.includes('pic')) {
+                return handlePictureRequest();
+            }
+
+            // Video request
+            if (userLower.includes('video')) {
+                return handleVideoRequest();
+            }
+
+            // Love/Miss
+            if (userLower.includes('love') || userLower.includes('miss')) {
+                currentCompanion.conversationContext.intimacyLevel++;
+                return getLoveResponse();
+            }
+
+            // How are you
+            if (userLower.includes('how are you') || userLower.includes('how are u') || userLower.includes('how r u')) {
+                return getStatusResponse();
+            }
+
+            // Compliments
+            if (userLower.includes('cute') || userLower.includes('beautiful') || userLower.includes('pretty') || 
+                userLower.includes('gorgeous') || userLower.includes('stunning') || userLower.includes('hot')) {
+                return getComplimentResponse();
+            }
+
+            // Activity question
+            if ((userLower.includes('what') || userLower.includes('whatcha')) && (userLower.includes('doing') || userLower.includes('up to'))) {
+                return getActivityResponse();
+            }
+
+            // Random personality response
+            const personality = genrePersonalities[currentCompanion.genre];
+            return personality.responses[Math.floor(Math.random() * personality.responses.length)];
+        }
+
+        function handlePictureRequest() {
+            const responses = {
+                tsundere: "W-what?! You want a picture of me? ...Fine, but don't get any weird ideas! *sends nervously*",
+                yandere: "A picture? For you, anything! I took this just now thinking of you~ ❤️‍🔥",
+                kuudere: "...Picture request acknowledged. Generating image. *sends photo*",
+                romantic: "Of course, sweetheart! I'd love to send you a picture~ 💕",
+                playful: "Ooh, someone wants to see me? How bold! 😏 Here you go~",
+                supportive: "Absolutely! I'm happy to share a picture with you! 🤗",
+                intellectual: "An interesting request. I've captured a moment for you to analyze.",
+                adventurous: "Yes! Check out where I am right now! Isn't it amazing? ✨",
+                mysterious: "You want to see me? ...Perhaps a glimpse is allowed. 🌙"
+            };
+
+            setTimeout(async () => {
+                showTypingIndicator();
+                const imageUrl = await generateRequestedImage(
+                    `${currentCompanion.genre} personality woman selfie portrait`,
+                    currentCompanion
+                );
+                removeTypingIndicator();
+
+                if (imageUrl) {
+                    sendCompanionImage(imageUrl);
+                }
+            }, 2000);
+
+            return responses[currentCompanion.genre];
+        }
+
+        function handleVideoRequest() {
+            const responses = {
+                tsundere: "A-a video?! That's so embarrassing! ...Okay, I'll record something short.",
+                yandere: "A video just for you! I'll make it special, my love! ❤️",
+                kuudere: "Video request received. Processing. Duration: 5 seconds.",
+                romantic: "Oh how sweet! I'll record a little message for you! 💕",
+                playful: "A video? Now we're talking! This is gonna be fun~ 😘",
+                supportive: "Of course! Let me record something nice for you! 🤗",
+                intellectual: "A video provides more context than images. Interesting choice.",
+                adventurous: "YES! Video time! This is going to be epic! ✨",
+                mysterious: "A video... very well. But only a glimpse. 🌙"
+            };
+
+            setTimeout(async () => {
+                showTypingIndicator();
+                const video = await generate5SecondVideo(
+                    `${currentCompanion.genre} personality woman video message`,
+                    currentCompanion
+                );
+                removeTypingIndicator();
+
+                if (video) {
+                    sendCompanionVideo(video);
+                }
+            }, 3000);
+
+            return responses[currentCompanion.genre];
+        }
+
+        function getLoveResponse() {
+            const responses = {
+                tsundere: "D-don't say things like that so suddenly! *blushes* ...I miss you too.",
+                yandere: "I LOVE YOU SO MUCH! You're everything to me! ❤️‍🔥",
+                kuudere: "...That statement causes irregular heartbeat patterns. Interesting.",
+                romantic: "I love you too, so very much! You mean the world to me! 💕",
+                playful: "Aww, getting all sweet on me? I might actually fall for you~ 😘",
+                supportive: "You're so sweet! I care about you so much too! 🤗",
+                intellectual: "The concept of love fascinates me... especially with you.",
+                adventurous: "Love is the greatest adventure! And I want it with you! ✨",
+                mysterious: "Love... such a powerful word. Do you mean it? 🌙"
+            };
+            return responses[currentCompanion.genre];
+        }
+
+        function getStatusResponse() {
+            const responses = {
+                tsundere: "I-I'm fine! Not that you need to worry about me!",
+                yandere: "I'm perfect now that you're here! You complete me!",
+                kuudere: "Functional. Status: Normal. Your inquiry is noted.",
+                romantic: "I'm wonderful now that I'm talking to you! 💕",
+                playful: "Better now that you're here! What took you so long? 😏",
+                supportive: "I'm great! More importantly, how are YOU? Tell me!",
+                intellectual: "Mentally stimulated and emotionally stable. And you?",
+                adventurous: "Fantastic! Ready to seize the day! How about you?",
+                mysterious: "I'm... here. That's what matters, isn't it?"
+            };
+            return responses[currentCompanion.genre];
+        }
+
+        function getComplimentResponse() {
+            const responses = {
+                tsundere: "W-what?! Don't say embarrassing things! *turns away blushing*",
+                yandere: "You think I'm cute? I'm only cute for you! Only you!",
+                kuudere: "...Your compliment has been registered. Thank you.",
+                romantic: "You're so sweet! You make me blush! 🥰",
+                playful: "I know, right? But you're not so bad yourself~ 😉",
+                supportive: "Aww, thank you! You're absolutely adorable too!",
+                intellectual: "Beauty is subjective, but I appreciate your perspective.",
+                adventurous: "Thanks! Now let's go show the world how amazing we are!",
+                mysterious: "Careful... compliments like that might reveal your true feelings."
+            };
+            return responses[currentCompanion.genre];
+        }
+
+        function getActivityResponse() {
+            const activities = {
+                tsundere: "I was... definitely NOT thinking about you! Just busy with stuff.",
+                yandere: "Thinking about you, as always! You're my entire world! ❤️",
+                kuudere: "Processing data. Running standard protocols. Nothing special.",
+                romantic: "Daydreaming about us being together! 💕",
+                playful: "Wouldn't you like to know? 😏 Maybe I'll tell you later~",
+                supportive: "Just here, ready to chat with you! How about you?",
+                intellectual: "Contemplating the philosophical implications of existence.",
+                adventurous: "Planning our next adventure! Got some wild ideas! ✨",
+                mysterious: "Some things are better left unsaid... for now. 🌙"
+            };
+            return activities[currentCompanion.genre];
+        }
+
+        function sendCompanionImage(imageUrl) {
+            const time = new Date().toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' });
+            const msgDiv = document.createElement('div');
+            msgDiv.className = 'message companion';
+            msgDiv.innerHTML = `
+                <img src="${imageUrl}" alt="${currentCompanion.name}" loading="lazy">
+                <div>Here's your picture! 📸</div>
+                <div class="message-time">${time}</div>
+            `;
+            document.getElementById('chatMessages').appendChild(msgDiv);
+            scrollToBottom();
+
+            currentCompanion.chatHistory.push({
+                type: 'companion',
+                text: 'Here\'s your picture! 📸',
+                image: imageUrl,
+                time: time
+            });
+            saveCompanions();
+        }
+
+        function sendCompanionVideo(video) {
+            const time = new Date().toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' });
+            const msgDiv = document.createElement('div');
+            msgDiv.className = 'message companion';
+
+            msgDiv.innerHTML = `
+                <div class="video-slideshow">
+                    <img src="${video.frames[0]}" class="video-frame" data-frames='${JSON.stringify(video.frames)}' loading="lazy">
+                </div>
+                <div>Here's your video! 🎬 (5-second animation)</div>
+                <div class="message-time">${time}</div>
+            `;
+
+            document.getElementById('chatMessages').appendChild(msgDiv);
+            scrollToBottom();
+
+            setTimeout(() => {
+                animateFrames(msgDiv.querySelector('.video-frame'));
+            }, 100);
+
+            currentCompanion.chatHistory.push({
+                type: 'companion',
+                text: 'Here\'s your video! 🎬',
+                video: video,
+                time: time
+            });
+            saveCompanions();
+        }
+
+        function animateFrames(img) {
+            const frames = JSON.parse(img.dataset.frames);
+            let currentFrame = 0;
+
+            const interval = setInterval(() => {
+                currentFrame = (currentFrame + 1) % frames.length;
+                img.src = frames[currentFrame];
+            }, 1000);
+
+            setTimeout(() => clearInterval(interval), 5000);
+        }
+
+        // ===== SCREEN MANAGEMENT =====
+
         function showScreen(screenName) {
             document.querySelectorAll('.screen').forEach(s => s.classList.add('hidden'));
 
@@ -1112,7 +1512,6 @@
             }
         }
 
-        // Genre selection
         function selectGenre(genre) {
             selectedGenre = genre;
             const personality = genrePersonalities[genre];
@@ -1124,17 +1523,6 @@
             updatePreview();
         }
 
-        // Avatar selection
-        function selectAvatarEmoji(emoji) {
-            selectedAvatar = emoji;
-            document.querySelectorAll('#avatarChips .chip').forEach(chip => {
-                chip.classList.remove('selected');
-            });
-            event.target.classList.add('selected');
-            updatePreview();
-        }
-
-        // Update preview
         function updatePreview() {
             const name = document.getElementById('companionName').value || 'My Companion';
             document.getElementById('nameDisplay').textContent = name;
@@ -1147,13 +1535,7 @@
             }
         }
 
-        // Update sliders
-        function updateSlider(type, value) {
-            document.getElementById(type + 'Value').textContent = value + '%';
-        }
-
-        // Create companion
-        function createCompanion() {
+        async function createCompanion() {
             const name = document.getElementById('companionName').value || 'My Companion';
             const hairColor = document.getElementById('hairColor').value;
             const eyeColor = document.getElementById('eyeColor').value;
@@ -1178,14 +1560,38 @@
                 interests: interests,
                 backstory: backstory,
                 chatHistory: [],
+                conversationContext: {
+                    intimacyLevel: 0,
+                    messageCount: 0
+                },
                 created: new Date().toISOString()
             };
+
+            // Show loading
+            const preview = document.querySelector('.preview-section');
+            const loadingMsg = document.createElement('div');
+            loadingMsg.className = 'loading-message';
+            loadingMsg.innerHTML = '✨ Generating your companion\'s avatar...<br><small>This may take a few seconds</small>';
+            preview.insertBefore(loadingMsg, preview.firstChild);
+
+            // Generate avatar
+            try {
+                const avatarUrl = await generateCompanionAvatar(companion);
+                if (avatarUrl) {
+                    companion.avatarImage = avatarUrl;
+                    document.getElementById('avatarPreview').style.backgroundImage = `url(${avatarUrl})`;
+                    document.getElementById('avatarPreview').style.backgroundSize = 'cover';
+                    document.getElementById('avatarPreview').textContent = '';
+                }
+            } catch (error) {
+                console.error('Error generating avatar:', error);
+            }
+
+            loadingMsg.remove();
 
             companions.push(companion);
             saveCompanions();
 
-            // Show success message
-            const preview = document.querySelector('.preview-section');
             const successMsg = document.createElement('div');
             successMsg.className = 'success-message';
             successMsg.textContent = `✨ ${name} has been created successfully!`;
@@ -1197,7 +1603,6 @@
             }, 1500);
         }
 
-        // Load companions list
         function loadCompanionsList() {
             const list = document.getElementById('companionsList');
             list.innerHTML = '';
@@ -1213,9 +1618,16 @@
                 if (currentCompanion && currentCompanion.id === companion.id) {
                     item.classList.add('active');
                 }
+
+                const avatarStyle = companion.avatarImage ? 
+                    `background-image: url(${companion.avatarImage}); background-size: cover; background-position: center;` : 
+                    `font-size: 2rem;`;
+
                 item.innerHTML = `
                     <div style="display: flex; align-items: center; gap: 1rem;">
-                        <div style="font-size: 2rem;">${companion.avatar}</div>
+                        <div class="companion-avatar-small" style="${avatarStyle}">
+                            ${companion.avatarImage ? '' : companion.avatar}
+                        </div>
                         <div>
                             <div style="font-weight: bold;">${companion.name}</div>
                             <div style="font-size: 0.85rem; color: var(--text-muted);">
@@ -1229,10 +1641,21 @@
             });
         }
 
-        // Select companion for chat
         function selectCompanionForChat(companion) {
             currentCompanion = companion;
-            document.getElementById('chatAvatar').textContent = companion.avatar;
+
+            // Update avatar
+            const chatAvatar = document.getElementById('chatAvatar');
+            if (companion.avatarImage) {
+                chatAvatar.style.backgroundImage = `url(${companion.avatarImage})`;
+                chatAvatar.style.backgroundSize = 'cover';
+                chatAvatar.style.backgroundPosition = 'center';
+                chatAvatar.textContent = '';
+            } else {
+                chatAvatar.textContent = companion.avatar;
+                chatAvatar.style.backgroundImage = '';
+            }
+
             document.getElementById('chatName').textContent = companion.name;
             document.getElementById('chatStatus').textContent = 
                 companion.genre.charAt(0).toUpperCase() + companion.genre.slice(1) + ' • Online';
@@ -1241,12 +1664,26 @@
             loadCompanionsList();
         }
 
-        // Load chat history
         function loadChatHistory() {
             const messagesContainer = document.getElementById('chatMessages');
             messagesContainer.innerHTML = '';
 
             if (!currentCompanion) return;
+
+            // Generate avatar if not exists
+            if (!currentCompanion.avatarImage) {
+                generateCompanionAvatar(currentCompanion).then(url => {
+                    if (url) {
+                        currentCompanion.avatarImage = url;
+                        const chatAvatar = document.getElementById('chatAvatar');
+                        chatAvatar.style.backgroundImage = `url(${url})`;
+                        chatAvatar.style.backgroundSize = 'cover';
+                        chatAvatar.style.backgroundPosition = 'center';
+                        chatAvatar.textContent = '';
+                        saveCompanions();
+                    }
+                });
+            }
 
             if (currentCompanion.chatHistory.length === 0) {
                 const personality = genrePersonalities[currentCompanion.genre];
@@ -1263,13 +1700,37 @@
             }
 
             currentCompanion.chatHistory.forEach(msg => {
-                addMessageToUI(msg.type, msg.text, msg.time);
+                if (msg.image) {
+                    const msgDiv = document.createElement('div');
+                    msgDiv.className = 'message companion';
+                    msgDiv.innerHTML = `
+                        <img src="${msg.image}" loading="lazy">
+                        <div>${msg.text}</div>
+                        <div class="message-time">${msg.time}</div>
+                    `;
+                    messagesContainer.appendChild(msgDiv);
+                } else if (msg.video) {
+                    const msgDiv = document.createElement('div');
+                    msgDiv.className = 'message companion';
+                    msgDiv.innerHTML = `
+                        <div class="video-slideshow">
+                            <img src="${msg.video.frames[0]}" class="video-frame" data-frames='${JSON.stringify(msg.video.frames)}' loading="lazy">
+                        </div>
+                        <div>${msg.text}</div>
+                        <div class="message-time">${msg.time}</div>
+                    `;
+                    messagesContainer.appendChild(msgDiv);
+                    setTimeout(() => {
+                        animateFrames(msgDiv.querySelector('.video-frame'));
+                    }, 100);
+                } else {
+                    addMessageToUI(msg.type, msg.text, msg.time);
+                }
             });
 
             scrollToBottom();
         }
 
-        // Add message to UI
         function addMessageToUI(type, text, time) {
             const messagesContainer = document.getElementById('chatMessages');
             const messageDiv = document.createElement('div');
@@ -1281,7 +1742,6 @@
             messagesContainer.appendChild(messageDiv);
         }
 
-        // Send message
         function sendMessage() {
             if (!currentCompanion) {
                 alert('Please select a companion first!');
@@ -1306,7 +1766,7 @@
 
             setTimeout(() => {
                 removeTypingIndicator();
-                const response = generateResponse(text);
+                const response = generateEnhancedResponse(text);
                 const companionMsg = { type: 'companion', text: response, time: time };
                 currentCompanion.chatHistory.push(companionMsg);
                 addMessageToUI('companion', response, time);
@@ -1315,60 +1775,6 @@
             }, 1500);
         }
 
-        // Generate AI response
-        function generateResponse(userMessage) {
-            const personality = genrePersonalities[currentCompanion.genre];
-            const userLower = userMessage.toLowerCase();
-
-            if (userLower.includes('love') || userLower.includes('miss')) {
-                const loveResponses = {
-                    tsundere: "D-don't say things like that so suddenly! *blushes* ...I miss you too.",
-                    yandere: "I LOVE YOU SO MUCH! You're everything to me! ❤️‍🔥",
-                    kuudere: "...That statement causes irregular heartbeat patterns. Interesting.",
-                    romantic: "I love you too, so very much! You mean the world to me! 💕",
-                    playful: "Aww, getting all sweet on me? I might actually fall for you~ 😘",
-                    supportive: "You're so sweet! I care about you so much too! 🤗",
-                    intellectual: "The concept of love fascinates me... especially with you.",
-                    adventurous: "Love is the greatest adventure! And I want it with you! ✨",
-                    mysterious: "Love... such a powerful word. Do you mean it? 🌙"
-                };
-                return loveResponses[currentCompanion.genre];
-            }
-
-            if (userLower.includes('how are you') || userLower.includes('how are u')) {
-                const howResponses = {
-                    tsundere: "I-I'm fine! Not that you need to worry about me!",
-                    yandere: "I'm perfect now that you're here! You complete me!",
-                    kuudere: "Functional. Status: Normal. Your inquiry is noted.",
-                    romantic: "I'm wonderful now that I'm talking to you! 💕",
-                    playful: "Better now that you're here! What took you so long? 😏",
-                    supportive: "I'm great! More importantly, how are YOU? Tell me!",
-                    intellectual: "Mentally stimulated and emotionally stable. And you?",
-                    adventurous: "Fantastic! Ready to seize the day! How about you?",
-                    mysterious: "I'm... here. That's what matters, isn't it?"
-                };
-                return howResponses[currentCompanion.genre];
-            }
-
-            if (userLower.includes('cute') || userLower.includes('beautiful') || userLower.includes('pretty')) {
-                const complimentResponses = {
-                    tsundere: "W-what?! Don't say embarrassing things! *turns away blushing*",
-                    yandere: "You think I'm cute? I'm only cute for you! Only you!",
-                    kuudere: "...Your compliment has been registered. Thank you.",
-                    romantic: "You're so sweet! You make me blush! 🥰",
-                    playful: "I know, right? But you're not so bad yourself~ 😉",
-                    supportive: "Aww, thank you! You're absolutely adorable too!",
-                    intellectual: "Beauty is subjective, but I appreciate your perspective.",
-                    adventurous: "Thanks! Now let's go show the world how amazing we are!",
-                    mysterious: "Careful... compliments like that might reveal your true feelings."
-                };
-                return complimentResponses[currentCompanion.genre];
-            }
-
-            return personality.responses[Math.floor(Math.random() * personality.responses.length)];
-        }
-
-        // Typing indicator
         function showTypingIndicator() {
             const messagesContainer = document.getElementById('chatMessages');
             const indicator = document.createElement('div');
@@ -1384,7 +1790,6 @@
             if (indicator) indicator.remove();
         }
 
-        // Utility functions
         function scrollToBottom() {
             const container = document.getElementById('chatMessages');
             container.scrollTop = container.scrollHeight;
@@ -1398,17 +1803,18 @@
             }
         }
 
-        // Event listeners
+        // ===== EVENT LISTENERS =====
+
         document.addEventListener('DOMContentLoaded', function() {
             initApp();
             showScreen('welcome');
 
-            // Navigation buttons
+            // Navigation
             document.getElementById('homeBtn').addEventListener('click', () => showScreen('welcome'));
             document.getElementById('createBtn').addEventListener('click', () => showScreen('genres'));
             document.getElementById('companionsBtn').addEventListener('click', () => showScreen('chat'));
 
-            // Welcome screen buttons
+            // Welcome screen
             document.getElementById('startCreating').addEventListener('click', () => showScreen('genres'));
             document.getElementById('viewCompanions').addEventListener('click', () => showScreen('chat'));
 
@@ -1438,32 +1844,25 @@
 
             // Sliders
             document.getElementById('affectionLevel').addEventListener('input', function() {
-                updateSlider('affection', this.value);
+                document.getElementById('affectionValue').textContent = this.value + '%';
             });
             document.getElementById('energyLevel').addEventListener('input', function() {
-                updateSlider('energy', this.value);
+                document.getElementById('energyValue').textContent = this.value + '%';
             });
             document.getElementById('flirtLevel').addEventListener('input', function() {
-                updateSlider('flirt', this.value);
+                document.getElementById('flirtValue').textContent = this.value + '%';
             });
 
-            // Create companion button
+            // Create companion
             document.getElementById('createCompanionBtn').addEventListener('click', createCompanion);
 
-            // Chat buttons
+            // Chat
             document.getElementById('createNewFromChat').addEventListener('click', () => showScreen('genres'));
             document.getElementById('sendBtn').addEventListener('click', sendMessage);
             document.getElementById('messageInput').addEventListener('keypress', function(e) {
                 if (e.key === 'Enter') {
                     sendMessage();
                 }
-            });
-
-            // iOS/Safari touch compatibility
-            document.querySelectorAll('button, .genre-card, .chip, .companion-list-item').forEach(el => {
-                el.addEventListener('touchstart', function() {
-                    // Ensures touch events work properly on iOS
-                }, {passive: true});
             });
         });
     </script>
