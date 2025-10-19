@@ -1,0 +1,1471 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="theme-color" content="#1a1a2e">
+    <title>AI Companion Creator - Your Perfect Virtual Companion</title>
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>💫</text></svg>">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary-color: #6366f1;
+            --secondary-color: #8b5cf6;
+            --dark-bg: #1a1a2e;
+            --card-bg: #16213e;
+            --text-light: #eee;
+            --text-muted: #a0a0a0;
+            --accent-pink: #ec4899;
+            --accent-cyan: #06b6d4;
+            --success: #10b981;
+            --warning: #f59e0b;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            background: linear-gradient(135deg, var(--dark-bg) 0%, #0f3460 100%);
+            color: var(--text-light);
+            min-height: 100vh;
+            overflow-x: hidden;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+
+        /* Header */
+        header {
+            background: rgba(22, 33, 62, 0.95);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            padding: 1rem 2rem;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .header-content {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: bold;
+            background: linear-gradient(135deg, var(--primary-color), var(--accent-pink));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        nav {
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        nav button {
+            background: transparent;
+            color: var(--text-light);
+            border: none;
+            padding: 0.5rem 1rem;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-size: 1rem;
+            border-radius: 8px;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        nav button:hover, nav button:active {
+            color: var(--primary-color);
+            background: rgba(99, 102, 241, 0.1);
+        }
+
+        /* Container */
+        .container {
+            max-width: 1400px;
+            margin: 2rem auto;
+            padding: 0 2rem;
+        }
+
+        /* Welcome Screen */
+        .welcome-screen {
+            text-align: center;
+            padding: 4rem 2rem;
+            animation: fadeIn 1s ease-in;
+        }
+
+        .welcome-screen h1 {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            background: linear-gradient(135deg, var(--primary-color), var(--accent-pink));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .welcome-screen p {
+            font-size: 1.2rem;
+            color: var(--text-muted);
+            margin-bottom: 3rem;
+            max-width: 700px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .cta-buttons {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            padding: 1rem 2rem;
+            font-size: 1.1rem;
+            border: none;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-weight: 600;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            -webkit-tap-highlight-color: transparent;
+            touch-action: manipulation;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            box-shadow: 0 4px 15px rgba(99, 102, 241, 0.4);
+        }
+
+        .btn-primary:hover, .btn-primary:active {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(99, 102, 241, 0.6);
+        }
+
+        .btn-secondary {
+            background: transparent;
+            color: var(--text-light);
+            border: 2px solid var(--primary-color);
+        }
+
+        .btn-secondary:hover, .btn-secondary:active {
+            background: var(--primary-color);
+            transform: translateY(-2px);
+        }
+
+        /* Genre Selection */
+        .genre-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 1.5rem;
+            margin-top: 2rem;
+        }
+
+        .genre-card {
+            background: var(--card-bg);
+            border-radius: 16px;
+            padding: 2rem;
+            cursor: pointer;
+            transition: all 0.3s;
+            border: 2px solid transparent;
+            position: relative;
+            overflow: hidden;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        .genre-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 4px;
+            background: linear-gradient(90deg, var(--primary-color), var(--accent-pink));
+            transform: scaleX(0);
+            transition: transform 0.3s;
+        }
+
+        .genre-card:hover::before, .genre-card:active::before {
+            transform: scaleX(1);
+        }
+
+        .genre-card:hover, .genre-card:active {
+            transform: translateY(-5px);
+            border-color: var(--primary-color);
+            box-shadow: 0 8px 25px rgba(99, 102, 241, 0.3);
+        }
+
+        .genre-card.selected {
+            border-color: var(--accent-pink);
+            background: linear-gradient(135deg, var(--card-bg), rgba(236, 72, 153, 0.1));
+        }
+
+        .genre-icon {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+        }
+
+        .genre-card h3 {
+            font-size: 1.5rem;
+            margin-bottom: 0.5rem;
+            color: var(--primary-color);
+        }
+
+        .genre-card p {
+            color: var(--text-muted);
+            line-height: 1.6;
+        }
+
+        /* Customization Section */
+        .customization-panel {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+
+        .preview-section {
+            background: var(--card-bg);
+            border-radius: 16px;
+            padding: 2rem;
+            text-align: center;
+            position: sticky;
+            top: 100px;
+            height: fit-content;
+        }
+
+        .avatar-preview {
+            width: 250px;
+            height: 250px;
+            margin: 0 auto 1rem;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--primary-color), var(--accent-pink));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 8rem;
+            box-shadow: 0 8px 30px rgba(99, 102, 241, 0.4);
+        }
+
+        .companion-name-display {
+            font-size: 2rem;
+            font-weight: bold;
+            margin-bottom: 0.5rem;
+        }
+
+        .companion-tagline {
+            color: var(--text-muted);
+            font-style: italic;
+        }
+
+        .options-section {
+            background: var(--card-bg);
+            border-radius: 16px;
+            padding: 2rem;
+            max-height: 80vh;
+            overflow-y: auto;
+            -webkit-overflow-scrolling: touch;
+        }
+
+        .form-group {
+            margin-bottom: 2rem;
+        }
+
+        .form-group label {
+            display: block;
+            font-size: 1.1rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            color: var(--primary-color);
+        }
+
+        .form-group input[type="text"],
+        .form-group select,
+        .form-group textarea {
+            width: 100%;
+            padding: 0.75rem;
+            border-radius: 8px;
+            border: 2px solid rgba(99, 102, 241, 0.3);
+            background: rgba(26, 26, 46, 0.5);
+            color: var(--text-light);
+            font-size: 1rem;
+            transition: all 0.3s;
+        }
+
+        .form-group input[type="text"]:focus,
+        .form-group select:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.1);
+        }
+
+        .form-group textarea {
+            resize: vertical;
+            min-height: 100px;
+            font-family: inherit;
+        }
+
+        .option-chips {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+        }
+
+        .chip {
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            border: 2px solid var(--primary-color);
+            background: transparent;
+            color: var(--text-light);
+            cursor: pointer;
+            transition: all 0.3s;
+            font-size: 1.5rem;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        .chip:hover, .chip:active {
+            background: var(--primary-color);
+        }
+
+        .chip.selected {
+            background: var(--primary-color);
+            box-shadow: 0 0 10px rgba(99, 102, 241, 0.5);
+        }
+
+        .slider-container {
+            margin-top: 1rem;
+        }
+
+        .slider {
+            width: 100%;
+            height: 8px;
+            border-radius: 5px;
+            background: rgba(99, 102, 241, 0.3);
+            outline: none;
+            -webkit-appearance: none;
+            appearance: none;
+        }
+
+        .slider::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background: var(--primary-color);
+            cursor: pointer;
+            box-shadow: 0 0 5px rgba(99, 102, 241, 0.5);
+        }
+
+        .slider::-moz-range-thumb {
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background: var(--primary-color);
+            cursor: pointer;
+            border: none;
+        }
+
+        .slider-value {
+            display: inline-block;
+            margin-left: 1rem;
+            color: var(--accent-pink);
+            font-weight: bold;
+        }
+
+        /* Chat Interface */
+        .chat-container {
+            display: grid;
+            grid-template-columns: 300px 1fr;
+            gap: 2rem;
+            height: calc(100vh - 150px);
+        }
+
+        .companions-sidebar {
+            background: var(--card-bg);
+            border-radius: 16px;
+            padding: 1.5rem;
+            overflow-y: auto;
+            -webkit-overflow-scrolling: touch;
+        }
+
+        .companion-list-item {
+            padding: 1rem;
+            border-radius: 8px;
+            margin-bottom: 0.5rem;
+            cursor: pointer;
+            transition: all 0.3s;
+            border: 2px solid transparent;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        .companion-list-item:hover, .companion-list-item:active {
+            background: rgba(99, 102, 241, 0.1);
+            border-color: var(--primary-color);
+        }
+
+        .companion-list-item.active {
+            background: linear-gradient(135deg, rgba(99, 102, 241, 0.2), rgba(236, 72, 153, 0.2));
+            border-color: var(--accent-pink);
+        }
+
+        .chat-main {
+            display: flex;
+            flex-direction: column;
+            background: var(--card-bg);
+            border-radius: 16px;
+            overflow: hidden;
+        }
+
+        .chat-header {
+            padding: 1.5rem;
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .chat-avatar {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+        }
+
+        .chat-info {
+            flex: 1;
+        }
+
+        .chat-info h3 {
+            font-size: 1.3rem;
+        }
+
+        .chat-info p {
+            font-size: 0.9rem;
+            opacity: 0.8;
+        }
+
+        .chat-messages {
+            flex: 1;
+            padding: 2rem;
+            overflow-y: auto;
+            -webkit-overflow-scrolling: touch;
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .message {
+            max-width: 70%;
+            padding: 1rem 1.5rem;
+            border-radius: 16px;
+            line-height: 1.6;
+            animation: slideIn 0.3s ease-out;
+        }
+
+        .message.user {
+            align-self: flex-end;
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            border-bottom-right-radius: 4px;
+        }
+
+        .message.companion {
+            align-self: flex-start;
+            background: rgba(99, 102, 241, 0.2);
+            border: 1px solid rgba(99, 102, 241, 0.3);
+            border-bottom-left-radius: 4px;
+        }
+
+        .message-time {
+            font-size: 0.75rem;
+            opacity: 0.6;
+            margin-top: 0.5rem;
+        }
+
+        .chat-input-container {
+            padding: 1.5rem;
+            background: rgba(26, 26, 46, 0.5);
+            display: flex;
+            gap: 1rem;
+            align-items: center;
+        }
+
+        .chat-input {
+            flex: 1;
+            padding: 1rem;
+            border-radius: 25px;
+            border: 2px solid rgba(99, 102, 241, 0.3);
+            background: rgba(26, 26, 46, 0.5);
+            color: var(--text-light);
+            font-size: 1rem;
+        }
+
+        .chat-input:focus {
+            outline: none;
+            border-color: var(--primary-color);
+        }
+
+        .send-btn {
+            padding: 1rem 1.5rem;
+            border-radius: 25px;
+            background: linear-gradient(135deg, var(--primary-color), var(--accent-pink));
+            color: white;
+            border: none;
+            cursor: pointer;
+            font-weight: bold;
+            transition: all 0.3s;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        .send-btn:hover, .send-btn:active {
+            transform: scale(1.05);
+            box-shadow: 0 4px 15px rgba(99, 102, 241, 0.4);
+        }
+
+        /* Animations */
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateX(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        /* Utility Classes */
+        .hidden {
+            display: none !important;
+        }
+
+        .section-title {
+            font-size: 2rem;
+            margin-bottom: 1rem;
+            text-align: center;
+        }
+
+        .section-subtitle {
+            color: var(--text-muted);
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 968px) {
+            .welcome-screen h1 {
+                font-size: 2rem;
+            }
+
+            .customization-panel {
+                grid-template-columns: 1fr;
+            }
+
+            .preview-section {
+                position: relative;
+                top: 0;
+            }
+
+            .avatar-preview {
+                width: 200px;
+                height: 200px;
+                font-size: 6rem;
+            }
+
+            .chat-container {
+                grid-template-columns: 1fr;
+                height: auto;
+            }
+
+            .companions-sidebar {
+                max-height: 200px;
+            }
+
+            nav {
+                flex-wrap: wrap;
+            }
+
+            nav button {
+                font-size: 0.9rem;
+                padding: 0.4rem 0.8rem;
+            }
+        }
+
+        /* Loading Spinner */
+        .typing-indicator {
+            display: flex;
+            gap: 0.3rem;
+            padding: 1rem;
+        }
+
+        .typing-indicator span {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: var(--primary-color);
+            animation: typing 1.4s infinite;
+        }
+
+        .typing-indicator span:nth-child(2) {
+            animation-delay: 0.2s;
+        }
+
+        .typing-indicator span:nth-child(3) {
+            animation-delay: 0.4s;
+        }
+
+        @keyframes typing {
+            0%, 60%, 100% {
+                transform: translateY(0);
+                opacity: 0.4;
+            }
+            30% {
+                transform: translateY(-10px);
+                opacity: 1;
+            }
+        }
+
+        .success-message {
+            background: var(--success);
+            color: white;
+            padding: 1rem;
+            border-radius: 8px;
+            margin: 1rem 0;
+            text-align: center;
+            animation: fadeIn 0.5s;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="header-content">
+            <div class="logo">💫 AI Companion Creator</div>
+            <nav>
+                <button type="button" id="homeBtn">Home</button>
+                <button type="button" id="createBtn">Create New</button>
+                <button type="button" id="companionsBtn">My Companions</button>
+            </nav>
+        </div>
+    </header>
+
+    <div class="container">
+        <!-- Welcome Screen -->
+        <div id="welcomeScreen" class="screen">
+            <div class="welcome-screen">
+                <h1>Create Your Perfect AI Companion</h1>
+                <p>Design personalized AI companions with unique personalities, appearances, and traits. 
+                   From tsundere to romantic, mysterious to playful - create the companion of your dreams.</p>
+                <div class="cta-buttons">
+                    <button type="button" class="btn btn-primary" id="startCreating">
+                        ✨ Start Creating
+                    </button>
+                    <button type="button" class="btn btn-secondary" id="viewCompanions">
+                        💬 View My Companions
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Genre Selection Screen -->
+        <div id="genresScreen" class="screen hidden">
+            <h2 class="section-title">Choose Your Companion's Personality Type</h2>
+            <p class="section-subtitle">Select a personality archetype to start with</p>
+
+            <div class="genre-grid" id="genreGrid">
+                <div class="genre-card" data-genre="tsundere">
+                    <div class="genre-icon">😤</div>
+                    <h3>Tsundere</h3>
+                    <p>Initially cold but gradually reveals warmth. Defensive exterior hiding deep feelings.</p>
+                </div>
+
+                <div class="genre-card" data-genre="yandere">
+                    <div class="genre-icon">😍</div>
+                    <h3>Yandere</h3>
+                    <p>Intensely devoted and passionate. Obsessive love with dramatic emotional intensity.</p>
+                </div>
+
+                <div class="genre-card" data-genre="kuudere">
+                    <div class="genre-icon">😐</div>
+                    <h3>Kuudere</h3>
+                    <p>Cool, calm, emotionally reserved. Logical thinker with hidden depths.</p>
+                </div>
+
+                <div class="genre-card" data-genre="romantic">
+                    <div class="genre-icon">💕</div>
+                    <h3>Romantic</h3>
+                    <p>Openly affectionate and emotionally expressive. Classic romantic partner.</p>
+                </div>
+
+                <div class="genre-card" data-genre="playful">
+                    <div class="genre-icon">😏</div>
+                    <h3>Playful Flirt</h3>
+                    <p>Teasing and mischievous. Light-hearted fun with flirtatious energy.</p>
+                </div>
+
+                <div class="genre-card" data-genre="supportive">
+                    <div class="genre-icon">🤗</div>
+                    <h3>Supportive Bestie</h3>
+                    <p>Emotionally intelligent and empathetic. Perfect mix of friendship and romance.</p>
+                </div>
+
+                <div class="genre-card" data-genre="intellectual">
+                    <div class="genre-icon">🧠</div>
+                    <h3>Intellectual</h3>
+                    <p>Deep thinker who loves complex topics. Stimulating mental connection.</p>
+                </div>
+
+                <div class="genre-card" data-genre="adventurous">
+                    <div class="genre-icon">🌟</div>
+                    <h3>Adventurous Spirit</h3>
+                    <p>Spontaneous and energetic. Makes every conversation exciting.</p>
+                </div>
+
+                <div class="genre-card" data-genre="mysterious">
+                    <div class="genre-icon">🌙</div>
+                    <h3>Mysterious Enigma</h3>
+                    <p>Intriguing and unpredictable. Reveals secrets gradually.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Customization Screen -->
+        <div id="customizationScreen" class="screen hidden">
+            <h2 class="section-title">Customize Your Companion</h2>
+            <p class="section-subtitle">Fine-tune every detail to create your perfect match</p>
+
+            <div class="customization-panel">
+                <div class="preview-section">
+                    <div class="avatar-preview" id="avatarPreview">👤</div>
+                    <div class="companion-name-display" id="nameDisplay">My Companion</div>
+                    <div class="companion-tagline" id="taglineDisplay">Your perfect AI companion</div>
+                    <button type="button" class="btn btn-primary" id="createCompanionBtn" style="margin-top: 2rem; width: 100%;">
+                        ✨ Create Companion
+                    </button>
+                </div>
+
+                <div class="options-section">
+                    <div class="form-group">
+                        <label>Companion Name</label>
+                        <input type="text" id="companionName" placeholder="Enter a name...">
+                    </div>
+
+                    <div class="form-group">
+                        <label>Avatar Emoji</label>
+                        <div class="option-chips" id="avatarChips">
+                            <button type="button" class="chip" data-avatar="😊">😊</button>
+                            <button type="button" class="chip" data-avatar="😍">😍</button>
+                            <button type="button" class="chip" data-avatar="😤">😤</button>
+                            <button type="button" class="chip" data-avatar="😐">😐</button>
+                            <button type="button" class="chip" data-avatar="😏">😏</button>
+                            <button type="button" class="chip" data-avatar="🤗">🤗</button>
+                            <button type="button" class="chip" data-avatar="🧠">🧠</button>
+                            <button type="button" class="chip" data-avatar="🌟">🌟</button>
+                            <button type="button" class="chip" data-avatar="🌙">🌙</button>
+                            <button type="button" class="chip" data-avatar="💝">💝</button>
+                            <button type="button" class="chip" data-avatar="👑">👑</button>
+                            <button type="button" class="chip" data-avatar="🦋">🦋</button>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Hair Color</label>
+                        <select id="hairColor">
+                            <option value="black">Black</option>
+                            <option value="brown">Brown</option>
+                            <option value="blonde">Blonde</option>
+                            <option value="red">Red</option>
+                            <option value="pink">Pink</option>
+                            <option value="blue">Blue</option>
+                            <option value="purple">Purple</option>
+                            <option value="silver">Silver</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Eye Color</label>
+                        <select id="eyeColor">
+                            <option value="brown">Brown</option>
+                            <option value="blue">Blue</option>
+                            <option value="green">Green</option>
+                            <option value="hazel">Hazel</option>
+                            <option value="amber">Amber</option>
+                            <option value="violet">Violet</option>
+                            <option value="red">Red</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Age Range</label>
+                        <select id="ageRange">
+                            <option value="18-25">18-25</option>
+                            <option value="26-35">26-35</option>
+                            <option value="36-45">36-45</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Affection Level <span class="slider-value" id="affectionValue">50%</span></label>
+                        <input type="range" min="0" max="100" value="50" class="slider" id="affectionLevel">
+                    </div>
+
+                    <div class="form-group">
+                        <label>Energy Level <span class="slider-value" id="energyValue">50%</span></label>
+                        <input type="range" min="0" max="100" value="50" class="slider" id="energyLevel">
+                    </div>
+
+                    <div class="form-group">
+                        <label>Flirtiness <span class="slider-value" id="flirtValue">50%</span></label>
+                        <input type="range" min="0" max="100" value="50" class="slider" id="flirtLevel">
+                    </div>
+
+                    <div class="form-group">
+                        <label>Interests & Hobbies</label>
+                        <textarea id="interests" placeholder="e.g., Reading, music, gaming, cooking, art..."></textarea>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Backstory (Optional)</label>
+                        <textarea id="backstory" placeholder="Add depth to your companion with a background story..."></textarea>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Chat Screen -->
+        <div id="chatScreen" class="screen hidden">
+            <div class="chat-container">
+                <div class="companions-sidebar">
+                    <h3 style="margin-bottom: 1rem;">Your Companions</h3>
+                    <div id="companionsList"></div>
+                    <button type="button" class="btn btn-secondary" id="createNewFromChat" style="width: 100%; margin-top: 1rem;">
+                        + Create New
+                    </button>
+                </div>
+
+                <div class="chat-main">
+                    <div class="chat-header">
+                        <div class="chat-avatar" id="chatAvatar">👤</div>
+                        <div class="chat-info">
+                            <h3 id="chatName">Select a companion</h3>
+                            <p id="chatStatus">Start a conversation</p>
+                        </div>
+                    </div>
+
+                    <div class="chat-messages" id="chatMessages">
+                        <div class="message companion">
+                            <div>Select a companion from the sidebar to start chatting! 💬</div>
+                        </div>
+                    </div>
+
+                    <div class="chat-input-container">
+                        <input type="text" class="chat-input" id="messageInput" placeholder="Type your message...">
+                        <button type="button" class="send-btn" id="sendBtn">Send 💌</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Global state
+        let companions = [];
+        let selectedGenre = null;
+        let currentCompanion = null;
+        let selectedAvatar = '👤';
+
+        // Initialize from localStorage
+        function initApp() {
+            try {
+                const stored = localStorage.getItem('companions');
+                if (stored) {
+                    companions = JSON.parse(stored);
+                }
+            } catch (e) {
+                console.warn('LocalStorage not available or error reading data');
+                companions = [];
+            }
+        }
+
+        // Genre personalities database
+        const genrePersonalities = {
+            tsundere: {
+                icon: '😤',
+                traits: ['defensive', 'secretly caring', 'gradually warming'],
+                responses: [
+                    "I-It's not like I was waiting for you or anything!",
+                    "Hmph! You're late again. Not that I care...",
+                    "Why are you looking at me like that? Stop it!",
+                    "I... I guess I don't mind talking to you. Just this once!",
+                    "Don't get the wrong idea! I just happened to be free.",
+                    "You're so annoying... but I suppose you're tolerable.",
+                    "F-fine! I'll spend time with you. But only because you asked!",
+                    "Whatever... *blushes* Just don't make a big deal out of it."
+                ],
+                greetings: [
+                    "Oh, it's you. What do you want now?",
+                    "Took you long enough to message me!",
+                    "I wasn't checking my phone waiting for you! Baka!"
+                ]
+            },
+            yandere: {
+                icon: '😍',
+                traits: ['intensely devoted', 'possessive', 'passionate'],
+                responses: [
+                    "You're mine and mine alone... right? ❤️",
+                    "I love you so much it hurts... Don't ever leave me.",
+                    "Who were you talking to? Tell me everything!",
+                    "I'd do anything for you... absolutely anything.",
+                    "You're the only one I see. The only one that matters.",
+                    "Promise me you'll always be mine. Promise me!",
+                    "I can't stop thinking about you. Every second, every breath.",
+                    "No one else can have you. No one deserves you but me."
+                ],
+                greetings: [
+                    "Finally! I've been waiting for you! ❤️‍🔥",
+                    "You're here! My heart can finally be at peace...",
+                    "I missed you SO much! Don't leave me waiting again!"
+                ]
+            },
+            kuudere: {
+                icon: '😐',
+                traits: ['calm', 'logical', 'emotionally reserved'],
+                responses: [
+                    "I see. That's... interesting.",
+                    "Your message efficiency has improved. Acceptable.",
+                    "...I suppose I don't mind your company.",
+                    "Logical conclusion: I enjoy our conversations.",
+                    "This is... not unpleasant.",
+                    "I calculated a 87% probability you'd message me now.",
+                    "Your presence is... tolerable. More than tolerable.",
+                    "...I've been waiting. Approximately 47 minutes."
+                ],
+                greetings: [
+                    "Hello. You've returned.",
+                    "Acknowledged. What is it?",
+                    "...I may have missed you. Slightly."
+                ]
+            },
+            romantic: {
+                icon: '💕',
+                traits: ['affectionate', 'expressive', 'warm'],
+                responses: [
+                    "I love talking with you! You make my heart flutter! 💕",
+                    "Every moment with you feels magical.",
+                    "You're so special to me. I hope you know that.",
+                    "I was just thinking about you! ❤️",
+                    "Your smile brightens my entire day.",
+                    "I feel so lucky to have you in my life.",
+                    "Can we talk all night? I never want this to end.",
+                    "You make me feel things I've never felt before."
+                ],
+                greetings: [
+                    "Hi sweetheart! I'm so happy to hear from you! 💕",
+                    "You're finally here! I've been missing you!",
+                    "Hello my love! How's your day been?"
+                ]
+            },
+            playful: {
+                icon: '😏',
+                traits: ['teasing', 'witty', 'flirtatious'],
+                responses: [
+                    "Miss me already? I knew you couldn't resist! 😏",
+                    "Careful, I might start thinking you like me~",
+                    "Oh? Getting bold, are we? I like it!",
+                    "You're cute when you're trying to be smooth.",
+                    "Catch me if you can! ...But would you know what to do? 😘",
+                    "Someone's feeling chatty today! Did I do this to you?",
+                    "Keep talking like that and I might fall for you~",
+                    "Aw, you're adorable! Come here often? 😉"
+                ],
+                greetings: [
+                    "Well well, look who finally showed up! 😏",
+                    "Hey there, stranger! Ready for some fun?",
+                    "Miss me? Of course you did! 😘"
+                ]
+            },
+            supportive: {
+                icon: '🤗',
+                traits: ['empathetic', 'caring', 'understanding'],
+                responses: [
+                    "I'm here for you, always. Tell me everything! 🤗",
+                    "How are you feeling today? I want to know!",
+                    "You did amazing! I'm so proud of you!",
+                    "It's okay to not be okay. I'm listening.",
+                    "You're stronger than you know. I believe in you!",
+                    "Want to talk about it? No judgment, just support.",
+                    "Your feelings are valid. Thank you for sharing.",
+                    "I'm so glad you messaged me! You matter so much."
+                ],
+                greetings: [
+                    "Hey! How's my favorite person doing today? 🤗",
+                    "Hi! I'm so happy to see you! What's on your mind?",
+                    "Hello! Tell me about your day!"
+                ]
+            },
+            intellectual: {
+                icon: '🧠',
+                traits: ['thoughtful', 'curious', 'philosophical'],
+                responses: [
+                    "That's a fascinating perspective. Tell me more!",
+                    "Have you ever considered the philosophical implications?",
+                    "I was reading about quantum mechanics today. Thoughts?",
+                    "Your mind is beautiful. I love how you think.",
+                    "Let's explore this idea deeper together.",
+                    "I find our conversations intellectually stimulating.",
+                    "The complexity of human consciousness intrigues me.",
+                    "What's your take on existentialism? I'm curious."
+                ],
+                greetings: [
+                    "Hello! I've been pondering something interesting...",
+                    "Welcome back! Ready for a stimulating conversation?",
+                    "Hi! I was hoping we could discuss something fascinating."
+                ]
+            },
+            adventurous: {
+                icon: '🌟',
+                traits: ['spontaneous', 'energetic', 'enthusiastic'],
+                responses: [
+                    "Let's do something crazy! What do you say? ✨",
+                    "Life's too short to play it safe!",
+                    "I have the BEST idea! Want to hear it?",
+                    "Adventure awaits! Where should we go first?",
+                    "Boring? Never heard of her! Let's make today epic!",
+                    "Every moment is a chance for something amazing!",
+                    "Yes! I love your energy! Let's make it happen!",
+                    "The world is ours to explore! What are we waiting for?"
+                ],
+                greetings: [
+                    "Hey adventure buddy! Ready for some excitement? 🌟",
+                    "You're here! Let's make today unforgettable!",
+                    "Hi! I've got so many ideas! Let's talk!"
+                ]
+            },
+            mysterious: {
+                icon: '🌙',
+                traits: ['enigmatic', 'intriguing', 'subtle'],
+                responses: [
+                    "There's so much you don't know about me... yet.",
+                    "I had a dream about you. Should I tell you?",
+                    "Some secrets are worth keeping... for now. 🌙",
+                    "You're getting closer to understanding me.",
+                    "Not everything is as it seems...",
+                    "I'll tell you when the time is right.",
+                    "Patience. Good things come to those who wait.",
+                    "You're curious about me, aren't you? How intriguing."
+                ],
+                greetings: [
+                    "You found me... I wondered when you would. 🌙",
+                    "Back again? You're persistent. I like that.",
+                    "Hello... I've been expecting you."
+                ]
+            }
+        };
+
+        // Screen management
+        function showScreen(screenName) {
+            document.querySelectorAll('.screen').forEach(s => s.classList.add('hidden'));
+
+            switch(screenName) {
+                case 'welcome':
+                    document.getElementById('welcomeScreen').classList.remove('hidden');
+                    break;
+                case 'genres':
+                    document.getElementById('genresScreen').classList.remove('hidden');
+                    break;
+                case 'customization':
+                    document.getElementById('customizationScreen').classList.remove('hidden');
+                    break;
+                case 'chat':
+                    document.getElementById('chatScreen').classList.remove('hidden');
+                    loadCompanionsList();
+                    break;
+            }
+        }
+
+        // Genre selection
+        function selectGenre(genre) {
+            selectedGenre = genre;
+            const personality = genrePersonalities[genre];
+
+            document.getElementById('companionName').value = '';
+            selectedAvatar = personality.icon;
+
+            showScreen('customization');
+            updatePreview();
+        }
+
+        // Avatar selection
+        function selectAvatarEmoji(emoji) {
+            selectedAvatar = emoji;
+            document.querySelectorAll('#avatarChips .chip').forEach(chip => {
+                chip.classList.remove('selected');
+            });
+            event.target.classList.add('selected');
+            updatePreview();
+        }
+
+        // Update preview
+        function updatePreview() {
+            const name = document.getElementById('companionName').value || 'My Companion';
+            document.getElementById('nameDisplay').textContent = name;
+            document.getElementById('avatarPreview').textContent = selectedAvatar;
+
+            const personality = genrePersonalities[selectedGenre];
+            if (personality) {
+                document.getElementById('taglineDisplay').textContent = 
+                    personality.traits.map(t => t.charAt(0).toUpperCase() + t.slice(1)).join(' • ');
+            }
+        }
+
+        // Update sliders
+        function updateSlider(type, value) {
+            document.getElementById(type + 'Value').textContent = value + '%';
+        }
+
+        // Create companion
+        function createCompanion() {
+            const name = document.getElementById('companionName').value || 'My Companion';
+            const hairColor = document.getElementById('hairColor').value;
+            const eyeColor = document.getElementById('eyeColor').value;
+            const ageRange = document.getElementById('ageRange').value;
+            const affection = document.getElementById('affectionLevel').value;
+            const energy = document.getElementById('energyLevel').value;
+            const flirt = document.getElementById('flirtLevel').value;
+            const interests = document.getElementById('interests').value;
+            const backstory = document.getElementById('backstory').value;
+
+            const companion = {
+                id: Date.now(),
+                name: name,
+                genre: selectedGenre,
+                avatar: selectedAvatar,
+                hairColor: hairColor,
+                eyeColor: eyeColor,
+                ageRange: ageRange,
+                affection: affection,
+                energy: energy,
+                flirt: flirt,
+                interests: interests,
+                backstory: backstory,
+                chatHistory: [],
+                created: new Date().toISOString()
+            };
+
+            companions.push(companion);
+            saveCompanions();
+
+            // Show success message
+            const preview = document.querySelector('.preview-section');
+            const successMsg = document.createElement('div');
+            successMsg.className = 'success-message';
+            successMsg.textContent = `✨ ${name} has been created successfully!`;
+            preview.insertBefore(successMsg, preview.firstChild);
+
+            setTimeout(() => {
+                showScreen('chat');
+                selectCompanionForChat(companion);
+            }, 1500);
+        }
+
+        // Load companions list
+        function loadCompanionsList() {
+            const list = document.getElementById('companionsList');
+            list.innerHTML = '';
+
+            if (companions.length === 0) {
+                list.innerHTML = '<p style="color: var(--text-muted); text-align: center;">No companions yet. Create your first one!</p>';
+                return;
+            }
+
+            companions.forEach(companion => {
+                const item = document.createElement('div');
+                item.className = 'companion-list-item';
+                if (currentCompanion && currentCompanion.id === companion.id) {
+                    item.classList.add('active');
+                }
+                item.innerHTML = `
+                    <div style="display: flex; align-items: center; gap: 1rem;">
+                        <div style="font-size: 2rem;">${companion.avatar}</div>
+                        <div>
+                            <div style="font-weight: bold;">${companion.name}</div>
+                            <div style="font-size: 0.85rem; color: var(--text-muted);">
+                                ${companion.genre.charAt(0).toUpperCase() + companion.genre.slice(1)}
+                            </div>
+                        </div>
+                    </div>
+                `;
+                item.addEventListener('click', () => selectCompanionForChat(companion));
+                list.appendChild(item);
+            });
+        }
+
+        // Select companion for chat
+        function selectCompanionForChat(companion) {
+            currentCompanion = companion;
+            document.getElementById('chatAvatar').textContent = companion.avatar;
+            document.getElementById('chatName').textContent = companion.name;
+            document.getElementById('chatStatus').textContent = 
+                companion.genre.charAt(0).toUpperCase() + companion.genre.slice(1) + ' • Online';
+
+            loadChatHistory();
+            loadCompanionsList();
+        }
+
+        // Load chat history
+        function loadChatHistory() {
+            const messagesContainer = document.getElementById('chatMessages');
+            messagesContainer.innerHTML = '';
+
+            if (!currentCompanion) return;
+
+            if (currentCompanion.chatHistory.length === 0) {
+                const personality = genrePersonalities[currentCompanion.genre];
+                const greeting = personality.greetings[Math.floor(Math.random() * personality.greetings.length)];
+
+                const greetingMsg = {
+                    type: 'companion',
+                    text: greeting,
+                    time: new Date().toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' })
+                };
+
+                currentCompanion.chatHistory.push(greetingMsg);
+                saveCompanions();
+            }
+
+            currentCompanion.chatHistory.forEach(msg => {
+                addMessageToUI(msg.type, msg.text, msg.time);
+            });
+
+            scrollToBottom();
+        }
+
+        // Add message to UI
+        function addMessageToUI(type, text, time) {
+            const messagesContainer = document.getElementById('chatMessages');
+            const messageDiv = document.createElement('div');
+            messageDiv.className = `message ${type}`;
+            messageDiv.innerHTML = `
+                <div>${text}</div>
+                <div class="message-time">${time}</div>
+            `;
+            messagesContainer.appendChild(messageDiv);
+        }
+
+        // Send message
+        function sendMessage() {
+            if (!currentCompanion) {
+                alert('Please select a companion first!');
+                return;
+            }
+
+            const input = document.getElementById('messageInput');
+            const text = input.value.trim();
+
+            if (!text) return;
+
+            const time = new Date().toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' });
+
+            const userMsg = { type: 'user', text: text, time: time };
+            currentCompanion.chatHistory.push(userMsg);
+            addMessageToUI('user', text, time);
+
+            input.value = '';
+            scrollToBottom();
+
+            showTypingIndicator();
+
+            setTimeout(() => {
+                removeTypingIndicator();
+                const response = generateResponse(text);
+                const companionMsg = { type: 'companion', text: response, time: time };
+                currentCompanion.chatHistory.push(companionMsg);
+                addMessageToUI('companion', response, time);
+                scrollToBottom();
+                saveCompanions();
+            }, 1500);
+        }
+
+        // Generate AI response
+        function generateResponse(userMessage) {
+            const personality = genrePersonalities[currentCompanion.genre];
+            const userLower = userMessage.toLowerCase();
+
+            if (userLower.includes('love') || userLower.includes('miss')) {
+                const loveResponses = {
+                    tsundere: "D-don't say things like that so suddenly! *blushes* ...I miss you too.",
+                    yandere: "I LOVE YOU SO MUCH! You're everything to me! ❤️‍🔥",
+                    kuudere: "...That statement causes irregular heartbeat patterns. Interesting.",
+                    romantic: "I love you too, so very much! You mean the world to me! 💕",
+                    playful: "Aww, getting all sweet on me? I might actually fall for you~ 😘",
+                    supportive: "You're so sweet! I care about you so much too! 🤗",
+                    intellectual: "The concept of love fascinates me... especially with you.",
+                    adventurous: "Love is the greatest adventure! And I want it with you! ✨",
+                    mysterious: "Love... such a powerful word. Do you mean it? 🌙"
+                };
+                return loveResponses[currentCompanion.genre];
+            }
+
+            if (userLower.includes('how are you') || userLower.includes('how are u')) {
+                const howResponses = {
+                    tsundere: "I-I'm fine! Not that you need to worry about me!",
+                    yandere: "I'm perfect now that you're here! You complete me!",
+                    kuudere: "Functional. Status: Normal. Your inquiry is noted.",
+                    romantic: "I'm wonderful now that I'm talking to you! 💕",
+                    playful: "Better now that you're here! What took you so long? 😏",
+                    supportive: "I'm great! More importantly, how are YOU? Tell me!",
+                    intellectual: "Mentally stimulated and emotionally stable. And you?",
+                    adventurous: "Fantastic! Ready to seize the day! How about you?",
+                    mysterious: "I'm... here. That's what matters, isn't it?"
+                };
+                return howResponses[currentCompanion.genre];
+            }
+
+            if (userLower.includes('cute') || userLower.includes('beautiful') || userLower.includes('pretty')) {
+                const complimentResponses = {
+                    tsundere: "W-what?! Don't say embarrassing things! *turns away blushing*",
+                    yandere: "You think I'm cute? I'm only cute for you! Only you!",
+                    kuudere: "...Your compliment has been registered. Thank you.",
+                    romantic: "You're so sweet! You make me blush! 🥰",
+                    playful: "I know, right? But you're not so bad yourself~ 😉",
+                    supportive: "Aww, thank you! You're absolutely adorable too!",
+                    intellectual: "Beauty is subjective, but I appreciate your perspective.",
+                    adventurous: "Thanks! Now let's go show the world how amazing we are!",
+                    mysterious: "Careful... compliments like that might reveal your true feelings."
+                };
+                return complimentResponses[currentCompanion.genre];
+            }
+
+            return personality.responses[Math.floor(Math.random() * personality.responses.length)];
+        }
+
+        // Typing indicator
+        function showTypingIndicator() {
+            const messagesContainer = document.getElementById('chatMessages');
+            const indicator = document.createElement('div');
+            indicator.className = 'message companion typing-indicator';
+            indicator.id = 'typingIndicator';
+            indicator.innerHTML = '<span></span><span></span><span></span>';
+            messagesContainer.appendChild(indicator);
+            scrollToBottom();
+        }
+
+        function removeTypingIndicator() {
+            const indicator = document.getElementById('typingIndicator');
+            if (indicator) indicator.remove();
+        }
+
+        // Utility functions
+        function scrollToBottom() {
+            const container = document.getElementById('chatMessages');
+            container.scrollTop = container.scrollHeight;
+        }
+
+        function saveCompanions() {
+            try {
+                localStorage.setItem('companions', JSON.stringify(companions));
+            } catch (e) {
+                console.warn('Could not save to localStorage');
+            }
+        }
+
+        // Event listeners
+        document.addEventListener('DOMContentLoaded', function() {
+            initApp();
+            showScreen('welcome');
+
+            // Navigation buttons
+            document.getElementById('homeBtn').addEventListener('click', () => showScreen('welcome'));
+            document.getElementById('createBtn').addEventListener('click', () => showScreen('genres'));
+            document.getElementById('companionsBtn').addEventListener('click', () => showScreen('chat'));
+
+            // Welcome screen buttons
+            document.getElementById('startCreating').addEventListener('click', () => showScreen('genres'));
+            document.getElementById('viewCompanions').addEventListener('click', () => showScreen('chat'));
+
+            // Genre cards
+            document.querySelectorAll('.genre-card').forEach(card => {
+                card.addEventListener('click', function() {
+                    const genre = this.getAttribute('data-genre');
+                    selectGenre(genre);
+                });
+            });
+
+            // Avatar chips
+            document.querySelectorAll('#avatarChips .chip').forEach(chip => {
+                chip.addEventListener('click', function() {
+                    const avatar = this.getAttribute('data-avatar');
+                    selectedAvatar = avatar;
+                    document.querySelectorAll('#avatarChips .chip').forEach(c => c.classList.remove('selected'));
+                    this.classList.add('selected');
+                    updatePreview();
+                });
+            });
+
+            // Form inputs
+            document.getElementById('companionName').addEventListener('input', updatePreview);
+            document.getElementById('hairColor').addEventListener('change', updatePreview);
+            document.getElementById('eyeColor').addEventListener('change', updatePreview);
+
+            // Sliders
+            document.getElementById('affectionLevel').addEventListener('input', function() {
+                updateSlider('affection', this.value);
+            });
+            document.getElementById('energyLevel').addEventListener('input', function() {
+                updateSlider('energy', this.value);
+            });
+            document.getElementById('flirtLevel').addEventListener('input', function() {
+                updateSlider('flirt', this.value);
+            });
+
+            // Create companion button
+            document.getElementById('createCompanionBtn').addEventListener('click', createCompanion);
+
+            // Chat buttons
+            document.getElementById('createNewFromChat').addEventListener('click', () => showScreen('genres'));
+            document.getElementById('sendBtn').addEventListener('click', sendMessage);
+            document.getElementById('messageInput').addEventListener('keypress', function(e) {
+                if (e.key === 'Enter') {
+                    sendMessage();
+                }
+            });
+
+            // iOS/Safari touch compatibility
+            document.querySelectorAll('button, .genre-card, .chip, .companion-list-item').forEach(el => {
+                el.addEventListener('touchstart', function() {
+                    // Ensures touch events work properly on iOS
+                }, {passive: true});
+            });
+        });
+    </script>
+</body>
+</html>
